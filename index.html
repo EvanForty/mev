@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MEV — anyone can extract value</title>
+<meta name="theme-color" content="#03040f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MEV — anyone can extract value">
+<meta property="og:description" content="Four MEV bots on the floor. Pick one, set your limits, launch it on Solana.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="description" content="A one-click MEV launchpad on Solana. Deploy an arbitrage, cross-DEX, liquidation or backrunning bot without code or servers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap row">
+    <a class="brand" href="#hq" aria-label="MEV home"><img src="/bot-nav.png" width="40" height="27" alt=""><span>MEV</span></a>
+    <span class="tick">$MEV</span>
+    <span class="spacer"></span>
+    <a class="btn ghost xlink" href="https://x.com/MEVLaunch" target="_blank" rel="noopener noreferrer" aria-label="MEV on X (opens in a new tab)" title="Follow us on X"><span aria-hidden="true">X</span></a>
+    <div class="wallet">
+      <button class="btn" id="walletBtn" aria-haspopup="true">connect wallet</button>
+      <div class="wallet-menu" id="walletMenu" role="menu">
+        <div class="lbl" id="wmProvider">connected</div>
+        <div class="addr" id="wmAddr"></div>
+        <button class="btn ghost" id="copyAddr" style="color:#e9e4f5">copy address</button>
+        <button class="btn ghost" id="disconnect" style="color:#ff9a9a">disconnect</button>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <nav class="tabs" aria-label="sections">
+      <a href="#hq" data-tab="hq" aria-current="page">HQ</a>
+      <a href="#how" data-tab="how">how it works</a>
+      <a href="#launch" data-tab="launch">launch</a>
+      <a href="#dashboard" data-tab="dashboard">dashboard</a>
+      <a href="#market" data-tab="market">marketplace</a>
+      <a href="#ledger" data-tab="ledger">buyback ledger</a>
+      <a href="#flywheel" data-tab="flywheel">flywheel</a>
+      <span class="live"><span class="dot"></span>epoch <b id="epoch">—</b></span>
+    </nav>
+  </div>
+</header>
+
+<main id="hq">
+  <div class="wrap">
+    <div class="intro">
+      <div>
+        <h1>anyone can extract value. <span>one click.</span></h1>
+        <p>Four MEV bots are on the floor. Pick one, set your limits, launch it on Solana. We run the RPCs, simulation and Jito bundles.</p>
+      </div>
+      <div class="ctas"><a class="btn" href="#launch">launch a bot</a><a class="btn ghost" href="#how">how it works</a></div>
+    </div>
+
+    <div class="stats">
+      <div><b id="tkBuyback">0 SOL</b><span>bought back</span></div>
+      <div><b>0</b><span>burned</span></div>
+      <div><b id="tkLaunched">0</b><span>bots launched</span></div>
+      <div><b id="tkValue">0 SOL</b><span>value extracted</span></div>
+      <div><b>0</b><span>sandwich attacks</span></div>
+    </div>
+
+    <div class="hq">
+      <div class="bezel">
+        <div class="screen stagebox" id="stagebox">
+          <div class="hud">
+            <span><b>FREE ROAM</b> &nbsp;drag to look around · click a bot</span>
+            <span class="r"><button type="button" id="autoCam" aria-pressed="true">auto camera</button><button type="button" id="resetCam">reset</button></span>
+          </div>
+          <div class="world"><div class="plane" id="plane"><div class="edge"></div><div class="edge r"></div><div class="core">MEV</div></div></div>
+          <div class="foot"><span>HQ open</span><span id="floorMsg">four bots clocked in. pick one to put it to work.</span></div>
+        </div>
+      </div>
+      <aside class="roster" aria-labelledby="rosterTitle">
+        <h2 id="rosterTitle">on the floor</h2>
+        <p class="sub">One bot per strategy. Pick one, tune it, launch your own copy.</p>
+        <ul id="rosterList"></ul>
+        <div class="detail" aria-live="polite">
+          <h3 id="dtName">ARBO</h3>
+          <p id="dtText"></p>
+          <a class="btn" id="dtGo" href="#launch">configure ARBO</a>
+        </div>
+      </aside>
+    </div>
+
+    <section class="block" id="how" aria-labelledby="howTitle">
+      <div class="block-head">
+        <h2 id="howTitle"><span class="hash">#</span>bots that earn their keep</h2>
+        <p class="lede">The infrastructure a professional searcher team builds, as a form you fill in.</p>
+      </div>
+      <ol class="cards">
+        <li><span class="n">01 · DEPLOY</span><h3>launch in one click</h3><p>Connect your wallet, pick a strategy, launch your bot.</p></li>
+        <li><span class="n">02 · PICK</span><h3>choose a strategy</h3><p>Arbitrage, backrunning, cross-DEX price gaps or liquidations.</p></li>
+        <li><span class="n">03 · RUN</span><h3>we run the stack</h3><p>RPC connections, transaction simulation, Jito bundle submission and execution.</p></li>
+        <li><span class="n">04 · TUNE</span><h3>set your limits</h3><p>Capital, risk limits, trading pairs and the minimum profit worth taking.</p></li>
+        <li><span class="n">05 · WATCH</span><h3>track every trade</h3><p>Success rate, value extracted, fees, tips and net profit on your dashboard.</p></li>
+        <li><span class="n">06 · EARN</span><h3>keep the profit</h3><p>You keep your share of profits. The platform takes a performance fee.</p></li>
+      </ol>
+    </section>
+
+    <section class="block" aria-labelledby="revTitle">
+      <div class="block-head">
+        <h2 id="revTitle"><span class="hash">#</span>how MEV makes money</h2>
+        <p class="lede">Three revenue lines, all tied to bots that actually run.</p>
+      </div>
+    <div class="rev">
+      <div><h3>performance fees</h3><p>A cut of net profit from every bot. If a bot doesn't profit, there's no fee.</p></div>
+      <div><h3>premium infrastructure</h3><p>Subscriptions for faster RPCs, priority simulation and dedicated bundle submission.</p></div>
+      <div><h3>$MEV utility</h3><p>Optional. Holders unlock lower fees, premium tiers and promotion in the marketplace.</p></div>
+    </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>MEV · a Solana MEV bot launchpad · bots can lose money · not financial advice</span>
+    <nav><a href="#launch">launch</a><a href="#market">marketplace</a><a href="#ledger">ledger</a><a href="https://x.com/MEVLaunch" target="_blank" rel="noopener noreferrer">x.com/MEVLaunch</a></nav>
+  </div>
+</footer>
+
+<section class="panel" id="p-launch" role="dialog" aria-modal="true" aria-labelledby="t-launch">
+  <div class="inner">
+    <div class="phead"><div><h2 id="t-launch"><span class="hash">#</span>launch console</h2><p>Choose what your bot hunts for and how much it's allowed to risk. Everything here becomes your bot's public profile.</p></div><button class="close" type="button" aria-label="close">✕</button></div>
+    <div class="bezel">
+      <div class="screen">
+        <div class="console">
+          <form id="launchForm" novalidate>
+            <div class="field">
+              <label for="bName">bot name</label>
+              <input id="bName" maxlength="32" placeholder="e.g. Spread Hunter" autocomplete="off" required>
+            </div>
+            <fieldset class="field" style="border:0;margin:0;padding:0">
+              <legend style="font-family:var(--mono);font-size:13px;color:#968fb3;margin-bottom:6px;padding:0">strategy</legend>
+              <div class="strats">
+                <div class="strat"><input type="radio" name="strat" id="sArb" value="Arbitrage" checked><label for="sArb"><b>arbitrage</b><span>Buy low on one pool, sell high on another, in one transaction.</span></label></div>
+                <div class="strat"><input type="radio" name="strat" id="sCross" value="Cross-DEX"><label for="sCross"><b>cross-DEX</b><span>Close price gaps between Raydium, Orca, Meteora and Phoenix.</span></label></div>
+                <div class="strat"><input type="radio" name="strat" id="sLiq" value="Liquidations"><label for="sLiq"><b>liquidations</b><span>Repay unhealthy loans on lending protocols for the liquidation bonus.</span></label></div>
+                <div class="strat"><input type="radio" name="strat" id="sBack" value="Backrunning"><label for="sBack"><b>backrunning</b><span>Trade right after a large swap moves a price, never before it.</span></label></div>
+                <div class="strat off" style="grid-column:1/-1"><input type="radio" name="strat" id="sSand" disabled><label for="sSand"><b>sandwich</b><span>Not offered. It costs ordinary traders money.</span></label></div>
+              </div>
+            </fieldset>
+            <div class="field">
+              <span style="display:block;font-family:var(--mono);font-size:13px;color:#968fb3;margin-bottom:6px" id="pairsLbl">trading pairs</span>
+              <div class="pairs" role="group" aria-labelledby="pairsLbl" id="pairs"></div>
+            </div>
+            <div class="row3">
+              <div class="field"><label for="bCap">capital (SOL)</label><input id="bCap" type="number" min="0.1" step="0.1" value="10" inputmode="decimal"></div>
+              <div class="field"><label for="bLoss">max daily loss</label><select id="bLoss"><option>1%</option><option selected>2%</option><option>5%</option><option>10%</option></select></div>
+              <div class="field"><label for="bMin">min profit (SOL)</label><input id="bMin" type="number" min="0" step="0.001" value="0.002" inputmode="decimal"><span class="hint">per trade, after fees + tips</span></div>
+            </div>
+            <div class="field">
+              <label id="clrLbl">identity colour</label>
+              <div class="swatches" role="group" aria-labelledby="clrLbl" id="swatches"></div>
+            </div>
+            <div class="preview" aria-live="polite">
+              <div class="avatar" id="pvAv">?</div>
+              <div><b id="pvName">your bot</b><span id="pvMeta"></span></div>
+            </div>
+            <button class="btn" type="submit" id="launchBtn">connect wallet to launch</button>
+          </form>
+          <div class="log">
+            <div class="title"><span>deploy log</span><span id="logState" style="color:#968fb3">idle</span></div>
+            <ol id="logList"><li class="idle">waiting for a name and a wallet<span class="cursor"></span></li></ol>
+            <div class="bar" aria-hidden="true"><i id="logBar"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="p-dashboard" role="dialog" aria-modal="true" aria-labelledby="t-dashboard">
+  <div class="inner">
+    <div class="phead"><div><h2 id="t-dashboard"><span class="hash">#</span>live dashboard</h2><p>Every number your bot produces, after fees and tips. Net profit is the one that matters.</p></div><button class="close" type="button" aria-label="close">✕</button></div>
+    <div class="bezel dash">
+      <div class="screen">
+        <div class="grid">
+          <div><span>execution success</span><b id="dSucc">—</b></div>
+          <div><span>value extracted</span><b id="dVal">—</b></div>
+          <div><span>fees + Jito tips</span><b id="dFee">—</b></div>
+          <div><span>net profit</span><b id="dNet">—</b></div>
+        </div>
+        <div class="chart"><div style="text-align:center"><p id="dMsg">Connect a wallet to see your bots.</p><button class="btn" id="dConnect" type="button">connect wallet</button></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="p-market" role="dialog" aria-modal="true" aria-labelledby="t-market">
+  <div class="inner">
+    <div class="phead"><div><h2 id="t-market"><span class="hash">#</span>bot marketplace</h2><p>Every bot gets a public profile: strategy, track record, success rate and risk. Launch your own or back one that's working.</p></div><button class="close" type="button" aria-label="close">✕</button></div>
+    <div class="mk-tools">
+      <label for="mkSearch" class="sr">search bots</label>
+      <input id="mkSearch" placeholder="search by name or strategy">
+      <div class="seg" role="group" aria-label="sort by">
+        <button aria-pressed="true" data-sort="ret">best 30d return</button>
+        <button aria-pressed="false" data-sort="succ">success rate</button>
+        <button aria-pressed="false" data-sort="new">newest</button>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>bot</th><th>strategy</th><th class="num">30d return</th><th class="num">success rate</th><th class="num">max drawdown</th><th>risk</th><th></th></tr></thead>
+        <tbody id="mkBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="p-ledger" role="dialog" aria-modal="true" aria-labelledby="t-ledger">
+  <div class="inner">
+    <div class="phead"><div><h2 id="t-ledger"><span class="hash">#</span>buyback ledger</h2><p>Every $MEV buyback and burn, with its transaction so anyone can check it.</p></div><button class="close" type="button" aria-label="close">✕</button></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>date</th><th>type</th><th class="num">SOL spent</th><th class="num">$MEV</th><th>transaction</th></tr></thead>
+        <tbody><tr><td colspan="5"><div class="empty"><b>no buybacks yet</b><span>Buybacks start once performance fees come in.</span></div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="p-flywheel" role="dialog" aria-modal="true" aria-labelledby="t-flywheel">
+  <div class="inner">
+    <div class="phead"><div><h2 id="t-flywheel"><span class="hash">#</span>the $MEV flywheel</h2><p>More bots means more executions. Executions earn fees. Fees buy back $MEV.</p></div><button class="close" type="button" aria-label="close">✕</button></div>
+    <div class="fly">
+    <svg viewBox="0 0 540 540" role="img" aria-label="Flywheel: more users launch bots, more successful executions, more performance fees, revenue funds $MEV buybacks, greater incentive to use the launchpad, back to more users">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="var(--phos)"/></marker></defs>
+      <path class="arc" d="M364 64 A200 200 0 0 1 452 194" marker-end="url(#ah)"/>
+      <path class="arc" d="M458 260 A200 200 0 0 1 418 414" marker-end="url(#ah)"/>
+      <path class="arc" d="M298 447 L248 447" marker-end="url(#ah)"/>
+      <path class="arc" d="M122 414 A200 200 0 0 1 82 260" marker-end="url(#ah)"/>
+      <path class="arc" d="M88 194 A200 200 0 0 1 174 64" marker-end="url(#ah)"/>
+      <rect class="core" x="205" y="225" width="130" height="90"/>
+      <text class="core-t" x="270" y="266" text-anchor="middle" font-size="18">$MEV</text>
+      <text class="core-t" x="270" y="290" text-anchor="middle" font-size="11">flywheel</text>
+      <g font-size="12">
+        <rect class="node-rect" x="180" y="30" width="180" height="54"/><text x="270" y="53" text-anchor="middle">more users</text><text x="270" y="71" text-anchor="middle">launch bots</text>
+        <rect class="node-rect" x="380" y="200" width="150" height="54"/><text x="455" y="223" text-anchor="middle">more successful</text><text x="455" y="241" text-anchor="middle">executions</text>
+        <rect class="node-rect" x="300" y="420" width="170" height="54"/><text x="385" y="443" text-anchor="middle">more performance</text><text x="385" y="461" text-anchor="middle">fees</text>
+        <rect class="node-rect" x="70" y="420" width="170" height="54"/><text x="155" y="443" text-anchor="middle">revenue funds</text><text x="155" y="461" text-anchor="middle">$MEV buybacks</text>
+        <rect class="node-rect" x="10" y="200" width="150" height="54"/><text x="85" y="223" text-anchor="middle">more reason to</text><text x="85" y="241" text-anchor="middle">use the launchpad</text>
+      </g>
+    </svg>
+      <div>
+      <ol>
+        <li><span class="k">→</span><span><b>More users launch bots.</b> Each one is a new searcher on the network.</span></li>
+        <li><span class="k">→</span><span><b>More successful executions.</b> Profitable trades are the only thing that moves the loop.</span></li>
+        <li><span class="k">→</span><span><b>More performance fees.</b> The platform earns only when bots earn.</span></li>
+        <li><span class="k">→</span><span><b>Revenue funds $MEV buybacks.</b> A share of fees buys the token on the open market.</span></li>
+        <li><span class="k">→</span><span><b>More reason to use the launchpad.</b> Holder perks pull in the next wave of operators.</span></li>
+      </ol>
+      <p class="fly-note">The loop only turns if bots execute profitably and the platform earns real revenue.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal" id="connectModal" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+  <div class="bezel"><div class="screen">
+    <button class="x" id="cmClose" aria-label="close">x</button>
+    <h3 id="cmTitle">connect wallet</h3>
+    <p style="color:#968fb3;font-size:15px">Pick a Solana wallet. We only read your public address.</p>
+    <div class="wlist" id="wList"></div>
+  </div></div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.95.3/lib/index.iife.min.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
